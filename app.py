@@ -56,7 +56,7 @@ def user_info():
         required = ("name", "email", "phone")
         if not all(key in body for key in required):
             return jsonify({"error": "Missing required fields"}), 400
-        
+
         if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', request.json["email"]):
             return jsonify({"error": "Invalid email format"}), 400
 
@@ -71,7 +71,7 @@ def user_info():
         body = request.json
         if not body:
             return jsonify({"error": "Invalid JSON"}), 400
-        
+
         if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', request.json["email"]):
             return jsonify({"error": "Invalid email format"}), 400
 
