@@ -3,6 +3,7 @@ Flask Application
 '''
 from flask import Flask, jsonify, request
 from models import Experience, Education, Skill
+from dataclasses import asdict
 
 app = Flask(__name__)
 
@@ -45,7 +46,7 @@ def experience():
     Handle experience requests
     '''
     if request.method == 'GET':
-        return jsonify(data["experience"])
+        return jsonify([asdict(exp) for exp in data["experience"]])
 
     if request.method == "POST":
         request_body = request.get_json()
