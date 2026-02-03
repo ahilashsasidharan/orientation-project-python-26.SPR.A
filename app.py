@@ -3,6 +3,7 @@ Flask Application
 '''
 from flask import Flask, jsonify, request
 from models import Experience, Education, Skill
+from dataclasses import asdict
 
 app = Flask(__name__)
 
@@ -66,6 +67,16 @@ def experience():
         return jsonify({"message": "Experience added successfully ", "id": new_experience_id}), 201
 
     return jsonify({})
+
+@app.route('/resume/experience/<int:exp_id>', methods=['GET'])
+def get_experience(exp_id):
+    '''
+    Return a specific experience by ID
+    '''
+    if exp_id < 0 or exp_id >= len(data["experience"]):
+        return jsonify({"error": "Experience not found"}), 404
+
+    return jsonify(asdict(data["experience"][exp_id]))
 
 @app.route('/resume/education', methods=['GET', 'POST'])
 def education():
