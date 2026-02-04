@@ -13,6 +13,26 @@ def test_client():
     assert response.json['message'] == "Hello, World!"
 
 
+
+def test_user_info():
+    '''
+    Add a new user info and then get all user info. 
+
+    Check that it returns the new user info in that list
+    '''
+    example_user_info = {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1234567890"
+    }
+
+    app.test_client().post('/resume/personal-info',
+                          json=example_user_info)
+
+    response = app.test_client().get('/resume/personal-info')
+    assert response.json == example_user_info
+
+
 def test_experience():
     '''
     Add a new experience and then get all experiences. 
