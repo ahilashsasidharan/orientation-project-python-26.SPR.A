@@ -87,6 +87,12 @@ def skill():
     Handles Skill requests
     '''
     if request.method == 'GET':
+        index = request.args.get('id', type=int)
+        if index is not None:
+            if 0 <= index < len(data["skill"]):
+                return jsonify(data["skill"][index].__dict__)
+            return jsonify({"error": "Invalid skill ID"}), 400
+
         return jsonify({})
 
     if request.method == 'POST':

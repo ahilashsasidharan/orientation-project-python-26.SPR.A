@@ -74,6 +74,16 @@ def test_skill():
     assert response.json[item_id] == example_skill
 
 
+def test_get_skill_by_index():
+    '''
+    Fetch a skill by its index via query parameter.
+    '''
+    response = app.test_client().get('/resume/skill', query_string={'id': 0})
+    assert response.status_code == 200
+    assert response.json['name'] == "Python"
+    assert response.json['proficiency'] == "1-2 Years"
+
+
 def test_delete_skill():
     '''
     Test deleting a skill by its index position.
