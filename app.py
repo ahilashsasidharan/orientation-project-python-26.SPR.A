@@ -1,6 +1,7 @@
 '''
 Flask Application
 '''
+from dataclasses import asdict
 import re
 from flask import Flask, jsonify, request
 from models import Experience, Education, Skill
@@ -135,6 +136,14 @@ def education():
     Handles education requests
     '''
     if request.method == 'GET':
+        index = request.args.get('id', type=int)
+        
+        if index is not None:
+            if 0 <= index < len(data["education"]):
+                return jsonify(asdict(data["education"][index]))
+            
+            return jsonify({"error": "Invalid education ID"}), 400
+        
         return jsonify({})
 
     if request.method == 'POST':
