@@ -107,8 +107,7 @@ def experience():
     Handle experience requests
     '''
     if request.method == 'GET':
-        experiences_as_dicts = [exp.__dict__ for exp in data["experience"]]
-        return jsonify(experiences_as_dicts)
+        return jsonify()
 
     if request.method == "POST":
         request_body = request.get_json()
@@ -121,7 +120,6 @@ def experience():
             request_body["start_date"],
             request_body["end_date"],
             request_body["description"],
-            request_body.get("logo", data["experience"][0].logo if data["experience"] else "default-logo.png")
         )
         data["experience"].append(new_experience)
 
@@ -137,8 +135,7 @@ def education():
     Handles education requests
     '''
     if request.method == 'GET':
-        education_as_dicts = [edu.__dict__ for edu in data["education"]]
-        return jsonify(education_as_dicts)
+        return jsonify({})
 
     if request.method == 'POST':
         request_body = request.get_json()
@@ -179,7 +176,7 @@ def delete_education(index):
             return jsonify({
                 'message': 'Education deleted successfully',
                 'deleted': deleted_education.__dict__
-            }), 200
+            }), 204
         return jsonify({'error': 'Education not found'}), 404
     except IndexError:
         return jsonify({'error': 'Education not found'}), 404
