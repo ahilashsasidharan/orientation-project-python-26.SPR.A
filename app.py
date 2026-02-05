@@ -93,7 +93,8 @@ def skill():
                 return jsonify(data["skill"][index].__dict__)
             return jsonify({"error": "Invalid skill ID"}), 400
 
-        return jsonify({})
+        skills_as_dicts = [skill.__dict__ for skill in data["skill"]]
+        return jsonify(skills_as_dicts)
 
     if request.method == 'POST':
         return jsonify({})
