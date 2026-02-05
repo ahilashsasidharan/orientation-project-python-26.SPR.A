@@ -53,6 +53,17 @@ def test_experience():
     response = app.test_client().get('/resume/experience')
     assert response.json[item_id] == example_experience
 
+def test_get_experience_by_valid_id():
+    response = app.test_client().get("/resume/experience/0")
+
+    assert response.status_code == 200
+    data = response.get_json()
+
+    assert "title" in data
+    assert "company" in data
+    assert "start_date" in data
+    assert "end_date" in data
+    assert "description" in data
 
 def test_education():
     '''

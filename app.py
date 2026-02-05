@@ -130,6 +130,16 @@ def experience():
 
     return jsonify({})
 
+@app.route('/resume/experience/<int:exp_id>', methods=['GET'])
+def get_experience(exp_id):
+    '''
+    Return a specific experience by ID
+    '''
+    if exp_id < 0 or exp_id >= len(data["experience"]):
+        return jsonify({"error": "Experience not found"}), 404
+
+    return jsonify(asdict(data["experience"][exp_id]))
+
 @app.route('/resume/education', methods=['GET', 'POST'])
 def education():
     '''
