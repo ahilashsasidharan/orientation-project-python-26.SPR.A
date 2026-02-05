@@ -194,7 +194,7 @@ def delete_education(index):
         return jsonify({'error': 'Education not found'}), 404
 
 
-@app.route('/resume/skill', methods=['GET', 'POST', 'DELETE'])
+@app.route('/resume/skill', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def skill():
     '''
     Handles Skill requests
@@ -226,12 +226,35 @@ def skill():
         data["skill"].append(new_skill)
         new_skill_id = len(data["skill"]) - 1
         return jsonify({"message": "Skill added successfully", "id": new_skill_id}), 201
+    
+    if request.method == 'PUT':
+        request_body = request.get_json()
+        if not request_body:
+            return jsonify({"error": "Request must be JSON"}), 400
+
+        index = request_body.get("id")
+        if index is None or not isinstance(index, int) or not 0 <= index < len(data["skill"]):
+            return jsonify({"error": "Invalid skill ID"}), 400
+
+        existing_skill = data["skill"][index]
+        updated_skill = Skill(
+            request_body.get("name", existing_skill.name),
+            request_body.get("proficiency", existing_skill.proficiency),
+            request_body.get("logo", existing_skill.logo),
+        )
+        data["skill"][index] = updated_skill
+
+        return jsonify({
+            "message": "Skill updated successfully",
+            "id": index,
+            "skill": updated_skill.__dict__
+        }), 200
 
     if request.method == 'DELETE':
         index = request.json.get('id')
         if index is not None and 0 <= index < len(data['skill']):
             deleted_skill = data['skill'].pop(index)
-            return jsonify({"message": "Skill deleted successfully"}), 204
+            return jsonify({"message": "Skill deleted successfully"}), 200
         return jsonify({"error": "Invalid skill ID"}), 400
 
     return jsonify({})
