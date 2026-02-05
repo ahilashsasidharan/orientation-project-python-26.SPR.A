@@ -103,7 +103,21 @@ def test_get_skill_by_index():
     assert response.json['name'] == "Python"
     assert response.json['proficiency'] == "1-2 Years"
 
-
+def test_delete_education_invalid_index():
+    '''
+    Test deleting an education with an invalid index.
+    
+    Should return 404 error.
+    '''
+    from app import data
+    
+    # Try to delete with an index that doesn't exist
+    invalid_index = len(data['education']) + 100
+    response = app.test_client().delete(f'/resume/education/{invalid_index}')
+    
+    # Check that it returns 404
+    assert response.status_code == 404
+    assert response.json['error'] == 'Education not found'
 def test_delete_skill():
     '''
     Test deleting a skill by its index position.
